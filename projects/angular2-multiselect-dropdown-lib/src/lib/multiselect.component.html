@@ -83,7 +83,7 @@
                 <span [hidden]="!isFilterSelectAll">{{settings.filterUnSelectAllText}}</span>
             </label>
             </div>
-            <label class="nodata-label" *ngIf="filterLength == 0" [hidden]="filter == undefined || filter?.length == 0">{{settings.noDataLabel}}</label>
+            <!-- <label class="nodata-label" *ngIf="filterLength == 0" [hidden]="filter == undefined || filter?.length == 0">{{settings.noDataLabel}}</label> -->
             <div class="btn-container" *ngIf="settings.addNewItemOnFilter && filterLength == 0" [hidden]="filter == undefined || filter?.length == 0">
             <button class="c-btn btn-iceblue" (click)="addFilterNewItem()">{{settings.addNewButtonText}}</button>
             </div>
@@ -101,7 +101,7 @@
 
         <div *ngIf="!settings.groupBy && !settings.lazyLoading && itemTempl == undefined" [style.maxHeight]="settings.maxHeight+'px'" style="overflow: auto;">
             <ul class="lazyContainer">
-                <li *ngFor="let item of data | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
+                <li *ngFor="let item of displayedData; let i = index;" (click)="onItemClick(item,i,$event)"
                     class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true }">
                     <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="settings.limitSelection == selectedItems?.length && !isSelected(item)"
                     />
@@ -110,7 +110,7 @@
             </ul>
         </div>
         <div *ngIf="!settings.groupBy && settings.lazyLoading && itemTempl == undefined" [style.maxHeight]="settings.maxHeight+'px'" style="overflow: auto;">
-            <virtual-scroll [items]="data" (vsUpdate)="viewPortItems = $event" (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}">
+            <virtual-scroll [items]="displayedData" (vsUpdate)="viewPortItems = $event" (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}">
                 <ul class="lazyContainer">
                     <li *ngFor="let item of viewPortItems | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
                         class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true }">
@@ -123,7 +123,7 @@
         </div>
         <div *ngIf="!settings.groupBy && !settings.lazyLoading && itemTempl != undefined" [style.maxHeight]="settings.maxHeight+'px'" style="overflow: auto;">
             <ul class="lazyContainer">
-                <li *ngFor="let item of data | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
+                <li *ngFor="let item of displayedData; let i = index;" (click)="onItemClick(item,i,$event)"
                     class="pure-checkbox" [ngClass]="{'selected-item': isSelected(item) == true }">
                     <input *ngIf="settings.showCheckbox" type="checkbox" [checked]="isSelected(item)" [disabled]="settings.limitSelection == selectedItems?.length && !isSelected(item)"
                     />
@@ -133,7 +133,7 @@
             </ul>
         </div>
         <div *ngIf="!settings.groupBy && settings.lazyLoading && itemTempl != undefined" [style.maxHeight]="settings.maxHeight+'px'" style="overflow: auto;">
-            <virtual-scroll [items]="data" (vsUpdate)="viewPortItems = $event" (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}">
+            <virtual-scroll [items]="displayedData" (vsUpdate)="viewPortItems = $event" (vsEnd)="onScrollEnd($event)" [ngStyle]="{'height': settings.maxHeight+'px'}">
 
                 <ul class="lazyContainer">
                     <li *ngFor="let item of viewPortItems | listFilter:filter : settings.searchBy; let i = index;" (click)="onItemClick(item,i,$event)"
@@ -223,7 +223,7 @@
                 </span>
             </ul>
         </div>
-        <h5 class="list-message" *ngIf="data?.length == 0">{{settings.noDataLabel}}</h5>
+        <h5 class="list-message" *ngIf="displayedData?.length == 0">{{settings.noDataLabel}}</h5>
     </div>
 </div>
 </div>

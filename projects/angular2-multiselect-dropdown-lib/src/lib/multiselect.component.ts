@@ -37,6 +37,8 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
     @Input()
     data: Array<any>;
 
+    displayedData: Array<any>;
+
     @Input()
     settings: DropdownSettings;
 
@@ -167,7 +169,6 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
             }
 
         });
-
     }
     ngOnChanges(changes: SimpleChanges) {
         if (changes.data && !changes.data.firstChange) {
@@ -187,6 +188,7 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
         }
     }
     ngDoCheck() {
+        this.pipeDisplayingData();
         if (this.selectedItems) {
             if (this.selectedItems.length == 0 || this.data.length == 0 || this.selectedItems.length < this.data.length) {
                 this.isSelectAll = false;
@@ -662,6 +664,11 @@ export class AngularMultiSelect implements OnInit, ControlValueAccessor, OnChang
         this.onAddFilterNewItem.emit(this.filter);
         this.filterPipe = new ListFilterPipe(this.ds);
         this.filterPipe.transform(this.data, this.filter, this.settings.searchBy);
+    }
+    private pipeDisplayingData() {
+        this.displayedData = this.data;
+        const pipe = new ListFilterPipe(this.ds);
+        this.displayedData = pipe.transform(this.data, this.filter, this.settings.searchBy);
     }
 }
 
